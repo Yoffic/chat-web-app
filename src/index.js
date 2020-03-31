@@ -5,8 +5,6 @@ import '../assets/application.scss';
 
 import gon from 'gon';
 
-import app from '../../ChannelsList';
-
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
