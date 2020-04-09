@@ -1,5 +1,3 @@
-// @ts-check
-
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -9,7 +7,6 @@ import socket from 'socket.io';
 import fastify from 'fastify';
 import pointOfView from 'point-of-view';
 import fastifyStatic from 'fastify-static';
-// import _ from 'lodash';
 import addRoutes from './routes.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -39,7 +36,7 @@ const setUpStaticAssets = (app) => {
 export default (options) => {
   const app = fastify();
 
-  setUpViews(app, options);
+  setUpViews(app);
   setUpStaticAssets(app);
 
   const io = socket(app.server);
