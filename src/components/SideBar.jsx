@@ -1,14 +1,34 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import cn from 'classnames';
+import { setActiveChannel } from '../actions';
 
-const renderChannel = (id, name) => (
-  <li key={id} className="nav-item">
-    <a href="/" type="button" className="nav-link btn btn-block text-left pl-0">
-      <span className="px-1">#</span>
-      {name}
-    </a>
-  </li>
-);
+const renderChannel = (id, name) => {
+  const dispatch = useDispatch();
+  const handleClick = (channelId) => {
+    dispatch(setActiveChannel({ channelId }));
+  };
+
+  const activeChannelId = useSelector((state) => state.activeChannelId);
+
+  const classes = cn({
+    'nav-link': true,
+    btn: true,
+    'btn-outline-info': true,
+    'btn-sm': true,
+    'my-1': true,
+    'w-100': true,
+    active: id === activeChannelId,
+  });
+
+  return (
+    <li key={id} className="nav-item">
+      <button type="button" className={classes} onClick={() => handleClick(id)}>
+        {name}
+      </button>
+    </li>
+  );
+};
 
 const SideBar = () => {
   const channels = useSelector((state) => state.channels);
