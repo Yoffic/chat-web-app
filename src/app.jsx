@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import faker from 'faker';
 import Cookies from 'js-cookie';
 import { Provider } from 'react-redux';
-import actions from './actions';
+import { getData, addMessageSuccess } from './actions';
 import store from './store.js';
+import socket from './socket.js';
 
+import UserContext from './context';
 import App from './components/App';
 
 const createUserName = () => {
@@ -14,10 +16,16 @@ const createUserName = () => {
 };
 
 export default (gon) => {
-  store.dispatch(actions.getData(gon));
+  store.dispatch(getData(gon));
   createUserName();
   const username = Cookies.get('username');
-  const UserContext = React.createContext(username);
+
+  socket.on('newChannel');
+  socket.on('removeChannel');
+  socket.on('renameChannel');
+  socket.on('newMessage', ({ data }) => {
+    store.dispatch(addMessageSuccess(data));
+  });
 
   ReactDOM.render(
     <Provider store={store}>

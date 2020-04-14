@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import actions from '../actions';
+import * as actions from '../actions';
 
 const reducer = createReducer({}, {
   [actions.getData]: (state, { payload }) => {
@@ -9,6 +9,16 @@ const reducer = createReducer({}, {
       channels,
       activeChannelId: currentChannelId,
       messages,
+    };
+  },
+  [actions.addMessageSuccess]: (state, { payload: { attributes } }) => {
+    state.messages.push(attributes);
+  },
+  [actions.setActiveChannel]: (state, { payload }) => {
+    const { channelId } = payload;
+    return {
+      ...state,
+      activeChannelId: channelId,
     };
   },
 });
