@@ -48,9 +48,9 @@ export default (app, io, defaultState = {}) => {
     .post('/api/v1/channels', (req, reply) => {
       const { data: { attributes: { name } } } = req.body;
       const channel = {
+        id: getNextId(),
         name,
         removable: true,
-        id: getNextId(),
       };
       state.channels.push(channel);
       reply.code(201);

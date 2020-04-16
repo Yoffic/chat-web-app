@@ -5,11 +5,18 @@ import routes from '../routes';
 export const getData = createAction('getData');
 
 export const addMessageSuccess = createAction('addMessageSuccess');
+export const addChannelSuccess = createAction('addChannelSuccess');
 
 export const setActiveChannel = createAction('setActiveChannel');
 
 export const addMessage = ({ channelId, username, message }) => async () => {
   const data = { attributes: { username, message } };
   const url = routes.channelMessagesPath(channelId);
+  await axios.post(url, { data });
+};
+
+export const addChannel = (name) => async () => {
+  const data = { attributes: { name } };
+  const url = routes.channelsPath();
   await axios.post(url, { data });
 };
