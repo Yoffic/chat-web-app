@@ -4,11 +4,10 @@ import { useDispatch } from 'react-redux';
 
 import { removeChannel } from '../../actions/index.js';
 
-// BEGIN (write your solution here)
 export default ({ hideModal, modalData }) => {
   const dispatch = useDispatch();
 
-  const removeTask = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(removeChannel(modalData.channelId));
     hideModal();
@@ -21,7 +20,7 @@ export default ({ hideModal, modalData }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <Form onSubmit={removeTask} onReset={() => hideModal()}>
+        <Form onSubmit={handleSubmit} onReset={() => hideModal()}>
           <Form.Group>
             <Button variant="outline-danger" type="submit">Remove</Button>
             {' '}
@@ -33,4 +32,3 @@ export default ({ hideModal, modalData }) => {
     </Modal>
   );
 };
-// END
