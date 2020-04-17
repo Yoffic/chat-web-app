@@ -21,7 +21,7 @@ const App = () => {
   const addChannelModal = () => showModal('adding');
 
   return (
-    <main role="application" className="row h-100 pb-4">
+    <main role="application" className="row h-100 mx-auto overflow-hidden">
       <SideBar
         addChannelModal={addChannelModal}
       />

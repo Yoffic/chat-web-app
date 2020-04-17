@@ -1,21 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import { addMessage } from '../actions';
 
 import UserContext from '../context.jsx';
 
-const validate = (values) => {
-  const errors = {};
-  if (!values.message) {
-    errors.message = 'Message could not be empty';
-  }
-
-  return errors;
-};
-
 const ChatInput = () => {
   const username = useContext(UserContext);
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const activeChannelId = useSelector((state) => state.activeChannelId);
   const dispatch = useDispatch();
@@ -43,16 +40,13 @@ const ChatInput = () => {
       initialValues={{
         message: '',
       }}
-      validate={validate}
       onSubmit={handleSubmit}
       enableReinitialize
     >
       {({
-        errors,
-        touched,
         isSubmitting,
       }) => (
-        <Form>
+        <Form className="mx-3">
           <div className="form-group">
             <Field
               id="message"
@@ -60,10 +54,8 @@ const ChatInput = () => {
               type="text"
               className="form-control"
               disabled={isSubmitting}
+              innerRef={inputRef}
             />
-            {errors.message && touched.message && (
-              <div className="d-block invalid-feedback">{errors.message}</div>
-            )}
           </div>
         </Form>
       )}
