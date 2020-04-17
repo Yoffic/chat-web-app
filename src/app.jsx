@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import faker from 'faker';
 import Cookies from 'js-cookie';
 import { Provider } from 'react-redux';
-import { getData, addMessageSuccess, addChannelSuccess } from './actions';
+import {
+  getData, addMessageSuccess, addChannelSuccess, removeChannelSuccess,
+} from './actions';
 import store from './store.js';
 import socket from './socket.js';
 
@@ -23,7 +25,9 @@ export default (gon) => {
   socket.on('newChannel', ({ data }) => {
     store.dispatch(addChannelSuccess(data));
   });
-  socket.on('removeChannel');
+  socket.on('removeChannel', ({ data }) => {
+    store.dispatch(removeChannelSuccess(data));
+  });
   socket.on('renameChannel');
   socket.on('newMessage', ({ data }) => {
     store.dispatch(addMessageSuccess(data));

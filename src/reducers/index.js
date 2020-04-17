@@ -8,6 +8,8 @@ const initialState = {
   loading: true,
 };
 
+const defaultActiveChannelId = 1;
+
 const reducer = createReducer(initialState, {
   [actions.getData]: (state, { payload }) => {
     const { channels, currentChannelId, messages } = payload;
@@ -27,6 +29,14 @@ const reducer = createReducer(initialState, {
   }),
   [actions.addChannelSuccess]: (state, { payload: { attributes } }) => {
     state.channels.push(attributes);
+  },
+  [actions.removeChannelSuccess]: (state, { payload: { id } }) => {
+    const updatedChannels = state.channels.filter((channel) => channel.id !== id);
+    return {
+      ...state,
+      activeChannelId: defaultActiveChannelId,
+      channels: updatedChannels,
+    };
   },
 });
 

@@ -19,13 +19,14 @@ const App = () => {
   const hideModal = () => setModalData({ type: null, channelId: null });
 
   const addChannelModal = () => showModal('adding');
+  const removeChannelModal = (id) => showModal('removing', id);
 
   return (
     <main role="application" className="row h-100 mx-auto overflow-hidden">
       <SideBar
         addChannelModal={addChannelModal}
       />
-      <Chat />
+      <Chat removeChannelModal={removeChannelModal} />
       {renderModal(modalData, hideModal)}
     </main>
   );

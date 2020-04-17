@@ -2,12 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import ChatInput from './ChatInput.jsx';
 
-const Chat = () => {
+const Chat = ({ removeChannelModal }) => {
   const messages = useSelector((state) => state.messages);
   const activeChannelId = useSelector((state) => state.activeChannelId);
   const activeChannel = useSelector((state) => state.channels
     .find(({ id }) => id === activeChannelId));
   const activeChannelName = activeChannel.name;
+
+  const handleRemove = () => removeChannelModal(activeChannelId);
 
   return (
     <section className="col-9 d-flex flex-column px-0 vw-100">
@@ -35,7 +37,7 @@ const Chat = () => {
                   <polygon points="18 2 22 6 12 16 8 16 8 12 18 2" />
                 </svg>
               </button>
-              <button type="button" className="btn btn-sm py-0 mr-2">
+              <button type="button" className="btn btn-sm py-0 mr-2" onClick={handleRemove}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
