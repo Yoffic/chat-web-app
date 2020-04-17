@@ -32,7 +32,7 @@ export default ({ hideModal }) => {
   });
 
   return (
-    <Modal autoFocus show onHide={hideModal} centered>
+    <Modal show onHide={hideModal} centered>
       <Modal.Header closeButton>
         <Modal.Title>Add New Channel</Modal.Title>
       </Modal.Header>
