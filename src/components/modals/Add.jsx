@@ -7,11 +7,11 @@ import { useDispatch } from 'react-redux';
 import { addChannel } from '../../actions/index.js';
 
 export default ({ hideModal }) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef();
 
   useEffect(() => {
     inputRef.current.focus();
-  }, [null]);
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -28,6 +28,7 @@ export default ({ hideModal }) => {
       name: '',
     },
     onSubmit: addNewChannel,
+    onReset: () => hideModal(),
   });
 
   return (
@@ -36,7 +37,7 @@ export default ({ hideModal }) => {
         <Modal.Title>Add New Channel</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={formik.handleSubmit}>
+        <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
             <Form.Label>Enter New Channel Name</Form.Label>
             <Form.Control
@@ -48,9 +49,10 @@ export default ({ hideModal }) => {
               ref={inputRef}
             />
           </Form.Group>
-          <Button variant="success" type="submit">
-            Submit
-          </Button>
+          <Button variant="outline-success" type="submit">Add</Button>
+          {' '}
+          <Button variant="outline-secondary" type="reset">Cancel</Button>
+          {' '}
         </Form>
       </Modal.Body>
     </Modal>
