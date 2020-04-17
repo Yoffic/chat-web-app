@@ -1,19 +1,13 @@
-import React, { useContext, useRef, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import { Form } from 'react-bootstrap';
 import { addMessage } from '../actions';
 
 import UserContext from '../context.jsx';
 
 const ChatInput = () => {
   const username = useContext(UserContext);
-
-  const inputRef = useRef();
-
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
   const activeChannelId = useSelector((state) => state.activeChannelId);
   const dispatch = useDispatch();
 
@@ -35,31 +29,26 @@ const ChatInput = () => {
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit: handleSubmit,
+    enableReinitialize: true,
+  });
+
   return (
-    <Formik
-      initialValues={{
-        message: '',
-      }}
-      onSubmit={handleSubmit}
-      enableReinitialize
-    >
-      {({
-        isSubmitting,
-      }) => (
-        <Form className="mx-3">
-          <div className="form-group">
-            <Field
-              id="message"
-              name="message"
-              type="text"
-              className="form-control"
-              disabled={isSubmitting}
-              innerRef={inputRef}
-            />
-          </div>
-        </Form>
-      )}
-    </Formik>
+    <Form onSubmit={formik.handleSubmit} className="mx-3">
+      <Form.Group>
+        <Form.Control
+          name="message"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.message}
+          disabled={formik.isSubmitting}
+        />
+      </Form.Group>
+    </Form>
   );
 };
 

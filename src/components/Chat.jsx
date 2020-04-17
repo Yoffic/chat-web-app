@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import ChatInput from './ChatInput.jsx';
+import ChatMessages from './ChatMessages.jsx';
 
 const renderEditButtons = ({ handleRename, handleRemove }) => (
   <>
@@ -41,43 +42,23 @@ const renderEditButtons = ({ handleRename, handleRemove }) => (
 );
 
 const Chat = ({ removeChannelModal, renameChannelModal }) => {
-  const messages = useSelector((state) => state.messages);
-  const activeChannelId = useSelector((state) => state.activeChannelId);
   const activeChannel = useSelector((state) => state.channels
-    .find(({ id }) => id === activeChannelId));
-  const activeChannelName = activeChannel.name;
+    .find(({ id }) => id === state.activeChannelId));
 
-  const handleRemove = () => removeChannelModal(activeChannelId);
-  const handleRename = () => renameChannelModal(activeChannelId, activeChannelName);
+  const handleRemove = () => removeChannelModal(activeChannel.id);
+  const handleRename = () => renameChannelModal(activeChannel.id, activeChannel.name);
 
   return (
     <section className="col-9 d-flex flex-column px-0 vw-100">
       <section className="overflow-auto">
         <div className="bg-light border-bottom py-3 pl-3 d-flex">
-          <span className="">
+          <span>
             {'# '}
-            {activeChannelName}
+            {activeChannel.name}
           </span>
           {activeChannel.removable && renderEditButtons({ handleRename, handleRemove })}
         </div>
-        <div className="pt-3 pl-3">
-          {messages.map(({
-            id, username, message, channelId,
-          }) => {
-            if (channelId !== activeChannelId) {
-              return null;
-            }
-            return (
-              <div key={id}>
-                <span className="mr-1 font-weight-bold">
-                  {username}
-                  :
-                </span>
-                <span>{message}</span>
-              </div>
-            );
-          })}
-        </div>
+        <ChatMessages />
       </section>
       <section className="mt-auto w-100">
         <ChatInput />
