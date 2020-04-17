@@ -42,6 +42,8 @@ const renderEditButtons = ({ handleRename, handleRemove }) => (
 );
 
 const Chat = ({ removeChannelModal, renameChannelModal }) => {
+  const activeChannelId = useSelector((state) => state.activeChannelId);
+  console.log(activeChannelId);
   const activeChannel = useSelector((state) => state.channels
     .find(({ id }) => id === state.activeChannelId));
 

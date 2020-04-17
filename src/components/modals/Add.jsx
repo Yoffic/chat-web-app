@@ -43,6 +43,7 @@ export default ({ hideModal }) => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
+              disabled={formik.isSubmitting}
               required
               ref={inputRef}
             />

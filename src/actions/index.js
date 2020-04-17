@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import routes from '../routes';
+import routes from '../routes.js';
 
 export const getData = createAction('getData');
 

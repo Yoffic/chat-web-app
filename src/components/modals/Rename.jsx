@@ -44,6 +44,7 @@ export default ({ hideModal, modalData }) => {
               onBlur={formik.handleBlur}
               required
               value={formik.values.name}
+              disabled={formik.isSubmitting}
               ref={inputRef}
             />
           </Form.Group>

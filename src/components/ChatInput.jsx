@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
-import { addMessage } from '../actions';
+import { addMessage } from '../actions/index.js';
 
 import UserContext from '../context.jsx';
 
