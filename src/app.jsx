@@ -4,7 +4,7 @@ import faker from 'faker';
 import Cookies from 'js-cookie';
 import { Provider } from 'react-redux';
 import {
-  getData, addMessageSuccess, addChannelSuccess, removeChannelSuccess,
+  getData, addMessageSuccess, addChannelSuccess, removeChannelSuccess, renameChannelSuccess,
 } from './actions';
 import store from './store.js';
 import socket from './socket.js';
@@ -28,7 +28,9 @@ export default (gon) => {
   socket.on('removeChannel', ({ data }) => {
     store.dispatch(removeChannelSuccess(data));
   });
-  socket.on('renameChannel');
+  socket.on('renameChannel', ({ data }) => {
+    store.dispatch(renameChannelSuccess(data));
+  });
   socket.on('newMessage', ({ data }) => {
     store.dispatch(addMessageSuccess(data));
   });

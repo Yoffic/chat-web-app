@@ -9,7 +9,7 @@ export default ({ hideModal, modalData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(removeChannel(modalData.channelId));
+    dispatch(removeChannel(modalData.channel.id));
     hideModal();
   };
 

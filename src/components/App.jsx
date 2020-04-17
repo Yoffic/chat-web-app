@@ -14,19 +14,20 @@ const renderModal = (modalData, hideModal) => {
 };
 
 const App = () => {
-  const [modalData, setModalData] = useState({ type: null, channelId: null });
-  const showModal = (type, channelId = null) => setModalData({ type, channelId });
-  const hideModal = () => setModalData({ type: null, channelId: null });
+  const [modalData, setModalData] = useState({ type: null, channel: null });
+  const showModal = (type, channel = null) => setModalData({ type, channel });
+  const hideModal = () => setModalData({ type: null, channel: null });
 
   const addChannelModal = () => showModal('adding');
-  const removeChannelModal = (id) => showModal('removing', id);
+  const removeChannelModal = (id) => showModal('removing', { id });
+  const renameChannelModal = (id, name) => showModal('renaming', { id, name });
 
   return (
     <main role="application" className="row h-100 mx-auto overflow-hidden">
       <SideBar
         addChannelModal={addChannelModal}
       />
-      <Chat removeChannelModal={removeChannelModal} />
+      <Chat removeChannelModal={removeChannelModal} renameChannelModal={renameChannelModal} />
       {renderModal(modalData, hideModal)}
     </main>
   );
