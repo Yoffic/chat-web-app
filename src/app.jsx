@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import faker from 'faker';
 import Cookies from 'js-cookie';
 import { Provider } from 'react-redux';
-import {
-  getData, addMessageSuccess, addChannelSuccess, removeChannelSuccess, renameChannelSuccess,
-} from './actions';
+import * as actions from './actions/index.js';
 import store from './store.js';
 import socket from './socket.js';
 
-import UserContext from './context';
+import UserContext from './context.jsx';
 import App from './components/App';
 
 const createUserName = () => {
@@ -18,21 +16,22 @@ const createUserName = () => {
 };
 
 export default (gon) => {
-  store.dispatch(getData(gon));
+  store.dispatch(actions.getData(gon));
   createUserName();
   const username = Cookies.get('username');
 
   socket.on('newChannel', ({ data }) => {
-    store.dispatch(addChannelSuccess(data));
+    store.dispatch(actions.addChannelSuccess(data));
+    store.dispatch(actions.setActiveChannel({ channelId: data.id }));
   });
   socket.on('removeChannel', ({ data }) => {
-    store.dispatch(removeChannelSuccess(data));
+    store.dispatch(actions.removeChannelSuccess(data));
   });
   socket.on('renameChannel', ({ data }) => {
-    store.dispatch(renameChannelSuccess(data));
+    store.dispatch(actions.renameChannelSuccess(data));
   });
   socket.on('newMessage', ({ data }) => {
-    store.dispatch(addMessageSuccess(data));
+    store.dispatch(actions.addMessageSuccess(data));
   });
 
   ReactDOM.render(
