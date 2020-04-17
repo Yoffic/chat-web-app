@@ -1,8 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
-import {
-  Modal, Button, Form,
-} from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { addChannel } from '../../actions/index.js';
 

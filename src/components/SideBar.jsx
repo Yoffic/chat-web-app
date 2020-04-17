@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { setActiveChannel } from '../actions/index.js';
 import UserContext from '../context.jsx';
 
-const renderChannel = ({ id, name }, activeChannelId, activateChannel) => {
+const renderChannel = ({ channel: { id, name }, activeChannelId, activateChannel }) => {
   const classes = cn({
     'nav-link': true,
     'chat-button': true,
@@ -36,6 +36,7 @@ const SideBar = ({ addChannelModal }) => {
   const activeChannelId = useSelector((state) => state.activeChannelId);
   const channels = useSelector((state) => state.channels);
   const username = useContext(UserContext);
+
   const dispatch = useDispatch();
   const activateChannel = (channelId) => {
     dispatch(setActiveChannel({ channelId }));
@@ -61,13 +62,9 @@ const SideBar = ({ addChannelModal }) => {
           <small>{username}</small>
         </span>
       </section>
-      <section className="d-flex mb-3 align-items-center">
+      <section className="d-flex mb-2 mt-2 align-items-center">
         <h2 className="h6 mb-0 py-2 pl-3">Channels</h2>
-        <button
-          type="button"
-          className="btn p-1 ml-auto mr-3"
-          onClick={addChannelModal}
-        >
+        <button type="button" className="btn p-1 ml-auto mr-3" onClick={addChannelModal}>
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +84,7 @@ const SideBar = ({ addChannelModal }) => {
       </section>
       <nav role="navigation">
         <ul className="nav flex-column">
-          {channels.map((channel) => renderChannel(channel, activeChannelId, activateChannel))}
+          {channels.map((channel) => renderChannel({ channel, activeChannelId, activateChannel }))}
         </ul>
       </nav>
     </aside>

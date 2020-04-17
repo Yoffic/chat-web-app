@@ -8,7 +8,6 @@ const renderModal = (modalData, hideModal) => {
   if (!modalData.type) {
     return null;
   }
-
   const Component = getModal(modalData.type);
   return <Component modalData={modalData} hideModal={hideModal} />;
 };
@@ -24,9 +23,7 @@ const App = () => {
 
   return (
     <main role="application" className="row h-100 mx-auto overflow-hidden">
-      <SideBar
-        addChannelModal={addChannelModal}
-      />
+      <SideBar addChannelModal={addChannelModal} />
       <Chat removeChannelModal={removeChannelModal} renameChannelModal={renameChannelModal} />
       {renderModal(modalData, hideModal)}
     </main>
