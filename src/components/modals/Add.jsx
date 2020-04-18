@@ -48,9 +48,9 @@ export default ({ hideModal }) => {
               ref={inputRef}
             />
           </Form.Group>
-          <Button variant="outline-success" type="submit">Add</Button>
+          <Button variant="outline-success" type="submit" disabled={formik.isSubmitting}>Add</Button>
           {' '}
-          <Button variant="outline-secondary" type="reset">Cancel</Button>
+          <Button variant="outline-secondary" type="reset" disabled={formik.isSubmitting}>Cancel</Button>
           {' '}
         </Form>
       </Modal.Body>
