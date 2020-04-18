@@ -50,7 +50,7 @@ const Chat = ({ removeChannelModal, renameChannelModal }) => {
 
   return (
     <section className="col-9 d-flex flex-column px-0 vw-100">
-      <section className="overflow-auto">
+      <section className="overflow-auto mb-auto h-100">
         <div className="bg-light border-bottom py-3 pl-3 d-flex">
           <span>
             {'# '}
@@ -60,7 +60,7 @@ const Chat = ({ removeChannelModal, renameChannelModal }) => {
         </div>
         <ChatMessages />
       </section>
-      <section className="mt-auto w-100">
+      <section className="w-100">
         <ChatInput />
       </section>
     </section>
