@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import faker from 'faker';
 import Cookies from 'js-cookie';
 import { Provider } from 'react-redux';
-import * as actions from './actions/index.js';
+import { actions } from './slices/index.js';
 import store from './store.js';
 import socket from './socket.js';
 
@@ -16,22 +16,29 @@ const createUserName = () => {
 };
 
 export default (gon) => {
-  store.dispatch(actions.getData(gon));
+  // console.log(gon);
+  const defaultChannelId = gon.currentChannelId;
+  store.dispatch(actions.addChannelsSuccess(gon.channels));
+  store.dispatch(actions.addMessagesSuccess(gon.messages));
+  store.dispatch(actions.setActiveChannel(gon.currentChannelId));
+
   createUserName();
   const username = Cookies.get('username');
 
+  socket.on('newMessage', ({ data }) => {
+    const { attributes } = data;
+    store.dispatch(actions.addMessagesSuccess([attributes]));
+  });
   socket.on('newChannel', ({ data }) => {
-    store.dispatch(actions.addChannelSuccess(data));
-    store.dispatch(actions.setActiveChannel({ channelId: data.id }));
+    store.dispatch(actions.addChannelsSuccess([data.attributes]));
+    store.dispatch(actions.setActiveChannel(data.id));
   });
   socket.on('removeChannel', ({ data }) => {
+    store.dispatch(actions.setActiveChannel(defaultChannelId));
     store.dispatch(actions.removeChannelSuccess(data));
   });
   socket.on('renameChannel', ({ data }) => {
     store.dispatch(actions.renameChannelSuccess(data));
-  });
-  socket.on('newMessage', ({ data }) => {
-    store.dispatch(actions.addMessageSuccess(data));
   });
 
   ReactDOM.render(

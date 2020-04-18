@@ -1,20 +1,12 @@
 import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
+import { actions } from '../slices/index.js';
 
-import { setActiveChannel } from '../actions/index.js';
 import UserContext from '../context.jsx';
 
 const renderChannel = ({ channel: { id, name }, activeChannelId, activateChannel }) => {
-  const classes = cn({
-    'nav-link': true,
-    'chat-button': true,
-    'px-3': true,
-    btn: true,
-    'btn-sm': true,
-    'text-left': true,
-    'w-100': true,
-    'rounded-0': true,
+  const btnClasses = cn('nav-link chat-button px-3 btn btn-sm text-left w-100 rounded-0', {
     'chat-button-active': id === activeChannelId,
   });
 
@@ -22,7 +14,7 @@ const renderChannel = ({ channel: { id, name }, activeChannelId, activateChannel
     <li key={id} className="nav-item">
       <button
         type="button"
-        className={classes}
+        className={btnClasses}
         onClick={() => activateChannel(id)}
       >
         {'# '}
@@ -39,7 +31,7 @@ const SideBar = ({ addChannelModal }) => {
 
   const dispatch = useDispatch();
   const activateChannel = (channelId) => {
-    dispatch(setActiveChannel({ channelId }));
+    dispatch(actions.setActiveChannel(channelId));
   };
 
   return (

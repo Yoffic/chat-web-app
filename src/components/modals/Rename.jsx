@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { renameChannel } from '../../actions/index.js';
+import { asyncActions } from '../../slices/index.js';
 
 export default ({ hideModal, modalData }) => {
   const inputRef = useRef();
@@ -17,7 +17,7 @@ export default ({ hideModal, modalData }) => {
     if (values.name.length === 0) {
       return;
     }
-    await dispatch(renameChannel({ name: values.name, id: modalData.channel.id }));
+    await dispatch(asyncActions.renameChannel({ name: values.name, id: modalData.channel.id }));
     hideModal();
   };
 

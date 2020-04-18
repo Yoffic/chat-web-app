@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
-import { addMessage } from '../actions/index.js';
+import { asyncActions } from '../slices/index.js';
 
 import UserContext from '../context.jsx';
 
@@ -21,7 +21,7 @@ const ChatInput = () => {
       message: values.message,
     };
     try {
-      await dispatch(addMessage(data));
+      await dispatch(asyncActions.addMessages(data));
       actions.setSubmitting(false);
       actions.setFieldValue('message', '', false);
     } catch (error) {

@@ -2,14 +2,14 @@ import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
-import { removeChannel } from '../../actions/index.js';
+import { asyncActions } from '../../slices/index.js';
 
 export default ({ hideModal, modalData }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(removeChannel(modalData.channel.id));
+    dispatch(asyncActions.removeChannel(modalData.channel.id));
     hideModal();
   };
 
