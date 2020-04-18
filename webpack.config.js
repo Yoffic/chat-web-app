@@ -1,5 +1,3 @@
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
 const isProduction = process.env.NODE_ENV === 'production';
 console.log('isProduction', isProduction);
 
@@ -39,7 +37,6 @@ module.exports = {
     ],
   },
   optimization: {
-    minimizer: [new UglifyJsPlugin()],
     splitChunks: {
       cacheGroups: {
         commons: {
