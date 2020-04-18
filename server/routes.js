@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import uniqueId from 'lodash/uniqueId';
 
-const getNextId = () => Number(_.uniqueId());
+const getNextId = () => Number(uniqueId());
 
 const buildState = (defaultState) => {
   const generalChannelId = getNextId();

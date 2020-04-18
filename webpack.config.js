@@ -1,8 +1,11 @@
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 const isProduction = process.env.NODE_ENV === 'production';
 console.log('isProduction', isProduction);
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
+  devtool: '',
   entry: [
     `${__dirname}/src/index.js`,
   ],
@@ -13,6 +16,7 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
   output: {
+    filename: '[name].bundle.js',
     path: `${__dirname}/dist/public`,
     publicPath: '/assets/',
   },
@@ -33,5 +37,17 @@ module.exports = {
         ],
       },
     ],
+  },
+  optimization: {
+    minimizer: [new UglifyJsPlugin()],
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
 };

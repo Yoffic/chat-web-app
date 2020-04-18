@@ -1,8 +1,9 @@
 doctype html
 html.h-100(lang="en")
   head
-    title= Title
-    // script(src=assetPath('main.css'))
+    title Slack Chat
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     script.
       var gon = !{JSON.stringify(gon)};
   body.d-flex.flex-column.h-100
@@ -16,5 +17,5 @@ html.h-100(lang="en")
             a.nav-link(href="/") Home
     .container-fluid.h-100.overflow-hidden.p-0
       .h-100#chat
-      // block content
-    script(src=assetPath('main.js'))
+    script(src=assetPath('vendors.bundle.js'))
+    script(src=assetPath('main.bundle.js'))
