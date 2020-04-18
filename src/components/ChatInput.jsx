@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { Form } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 import { asyncActions } from '../slices/index.js';
 
 import UserContext from '../context.jsx';
@@ -9,9 +9,10 @@ import UserContext from '../context.jsx';
 const ChatInput = () => {
   const username = useContext(UserContext);
   const activeChannelId = useSelector((state) => state.activeChannelId);
+
   const dispatch = useDispatch();
 
-  const handleSubmit = async (values, actions) => {
+  const handleSubmit = (values, actions) => {
     if (values.message.length === 0) {
       return;
     }
@@ -20,13 +21,9 @@ const ChatInput = () => {
       username,
       message: values.message,
     };
-    try {
-      await dispatch(asyncActions.addMessages(data));
-      actions.setSubmitting(false);
-      actions.setFieldValue('message', '', false);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    dispatch(asyncActions.addMessages(data));
+    actions.setSubmitting(false);
+    actions.setFieldValue('message', '', false);
   };
 
   const formik = useFormik({

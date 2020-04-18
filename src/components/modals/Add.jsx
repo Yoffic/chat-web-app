@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { Modal, Button, Form } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
 import { asyncActions } from '../../slices/index.js';
 
@@ -14,10 +16,7 @@ export default ({ hideModal }) => {
   const dispatch = useDispatch();
 
   const addNewChannel = async (values) => {
-    if (values.name.length === 0) {
-      return;
-    }
-    await dispatch(asyncActions.addChannels(values.name));
+    dispatch(asyncActions.addChannels(values.name));
     hideModal();
   };
 

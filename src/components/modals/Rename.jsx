@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
-import { Modal, Form, Button } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
 import { asyncActions } from '../../slices/index.js';
 
@@ -14,10 +16,7 @@ export default ({ hideModal, modalData }) => {
   const dispatch = useDispatch();
 
   const renameCustomChannel = async (values) => {
-    if (values.name.length === 0) {
-      return;
-    }
-    await dispatch(asyncActions.renameChannel({ name: values.name, id: modalData.channel.id }));
+    dispatch(asyncActions.renameChannel({ name: values.name, id: modalData.channel.id }));
     hideModal();
   };
 

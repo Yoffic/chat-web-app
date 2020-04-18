@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes.js';
+import { actions as errorActions } from './errors.js';
+import { actions as processActions } from './processState.js';
 
 const slice = createSlice({
   name: 'channels',
@@ -21,32 +23,47 @@ const slice = createSlice({
   },
 });
 
-const addChannels = (name) => async () => {
+const addChannels = (name) => async (dispatch) => {
+  dispatch(processActions.setProcessing());
   const data = { attributes: { name } };
   const url = routes.channelsPath();
   try {
     await axios.post(url, { data });
-  } catch (error) {
-    throw new Error(error.message);
+    dispatch(errorActions.resetErrors());
+    dispatch(processActions.resetProcessing());
+  } catch (e) {
+    dispatch(processActions.resetProcessing());
+    dispatch(errorActions.addError({ message: 'Network problems. Try again' }));
+    throw e;
   }
 };
 
-const renameChannel = ({ name, id }) => async () => {
+const renameChannel = ({ name, id }) => async (dispatch) => {
+  dispatch(processActions.setProcessing());
   const data = { attributes: { name } };
   const url = routes.channelPath(id);
   try {
     await axios.patch(url, { data });
-  } catch (error) {
-    throw new Error(error.message);
+    dispatch(errorActions.resetErrors());
+    dispatch(processActions.resetProcessing());
+  } catch (e) {
+    dispatch(processActions.resetProcessing());
+    dispatch(errorActions.addError({ message: 'Network problems. Try again' }));
+    throw e;
   }
 };
 
-const removeChannel = (id) => async () => {
+const removeChannel = (id) => async (dispatch) => {
+  dispatch(processActions.setProcessing());
   const url = routes.channelPath(id);
   try {
     await axios.delete(url);
-  } catch (error) {
-    throw new Error(error.message);
+    dispatch(errorActions.resetErrors());
+    dispatch(processActions.resetProcessing());
+  } catch (e) {
+    dispatch(processActions.resetProcessing());
+    dispatch(errorActions.addError({ message: 'Network problems. Try again' }));
+    throw e;
   }
 };
 

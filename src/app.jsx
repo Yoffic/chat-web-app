@@ -16,11 +16,11 @@ const createUserName = () => {
 };
 
 export default (gon) => {
-  // console.log(gon);
   const defaultChannelId = gon.currentChannelId;
   store.dispatch(actions.addChannelsSuccess(gon.channels));
   store.dispatch(actions.addMessagesSuccess(gon.messages));
   store.dispatch(actions.setActiveChannel(gon.currentChannelId));
+  store.dispatch(actions.resetErrors());
 
   createUserName();
   const username = Cookies.get('username');
@@ -39,6 +39,10 @@ export default (gon) => {
   });
   socket.on('renameChannel', ({ data }) => {
     store.dispatch(actions.renameChannelSuccess(data));
+  });
+
+  socket.on('disconnect', () => {
+    store.dispatch(actions.addError({ message: 'Oops. Connection to server lost.' }));
   });
 
   ReactDOM.render(
