@@ -2,6 +2,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 import '../assets/application.scss';
+import './lib/i18n.js';
 
 import gon from 'gon';
 
