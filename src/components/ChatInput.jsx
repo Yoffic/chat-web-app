@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import { asyncActions } from '../slices/index.js';
@@ -7,12 +8,19 @@ import { asyncActions } from '../slices/index.js';
 import UserContext from '../context.jsx';
 
 const ChatInput = () => {
+  const { t } = useTranslation();
+
   const username = useContext(UserContext);
   const activeChannelId = useSelector((state) => state.activeChannelId);
 
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  });
+
   const dispatch = useDispatch();
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = async (values, actions) => {
     if (values.message.length === 0) {
       return;
     }
@@ -21,9 +29,12 @@ const ChatInput = () => {
       username,
       message: values.message,
     };
-    dispatch(asyncActions.addMessages(data));
-    actions.setSubmitting(false);
-    actions.setFieldValue('message', '', false);
+    try {
+      await dispatch(asyncActions.addMessages(data));
+      actions.resetForm();
+    } catch (e) {
+      actions.setFieldError('message', t('errors.network'));
+    }
   };
 
   const formik = useFormik({
@@ -31,7 +42,6 @@ const ChatInput = () => {
       message: '',
     },
     onSubmit: handleSubmit,
-    enableReinitialize: true,
   });
 
   return (
@@ -39,11 +49,17 @@ const ChatInput = () => {
       <Form.Group>
         <Form.Control
           name="message"
+          type="text"
+          placeholder={t('inputText')}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
           value={formik.values.message}
+          isInvalid={!!formik.errors.message}
           disabled={formik.isSubmitting}
+          ref={inputRef}
         />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.message}
+        </Form.Control.Feedback>
       </Form.Group>
     </Form>
   );
