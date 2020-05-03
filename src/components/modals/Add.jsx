@@ -15,7 +15,7 @@ export default ({ hideModal }) => {
 
   const dispatch = useDispatch();
 
-  const addNewChannel = async (values) => {
+  const addNewChannel = (values) => {
     dispatch(asyncActions.addChannels(values.name));
     hideModal();
   };

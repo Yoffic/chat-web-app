@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import faker from 'faker';
 import Cookies from 'js-cookie';
+import i18next from 'i18next';
 import { Provider } from 'react-redux';
 import { actions } from './slices/index.js';
-import store from './store.js';
+import store from './lib/store.js';
 import socket from './socket.js';
 
 import UserContext from './context.jsx';
@@ -17,10 +18,11 @@ const createUserName = () => {
 
 export default (gon) => {
   const defaultChannelId = gon.currentChannelId;
+
   store.dispatch(actions.addChannelsSuccess(gon.channels));
   store.dispatch(actions.addMessagesSuccess(gon.messages));
   store.dispatch(actions.setActiveChannel(gon.currentChannelId));
-  store.dispatch(actions.resetErrors());
+  store.dispatch(actions.setSuccess());
 
   createUserName();
   const username = Cookies.get('username');
@@ -42,7 +44,7 @@ export default (gon) => {
   });
 
   socket.on('disconnect', () => {
-    store.dispatch(actions.addError({ message: 'Oops. Connection to server lost.' }));
+    store.dispatch(actions.setFailed({ server: i18next.t('errors.server') }));
   });
 
   ReactDOM.render(

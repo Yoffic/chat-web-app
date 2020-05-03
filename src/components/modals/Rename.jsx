@@ -15,8 +15,9 @@ export default ({ hideModal, modalData }) => {
 
   const dispatch = useDispatch();
 
-  const renameCustomChannel = async (values) => {
-    dispatch(asyncActions.renameChannel({ name: values.name, id: modalData.channel.id }));
+  const renameCustomChannel = (values) => {
+    const channelData = { name: values.name, id: modalData.channel.id };
+    dispatch(asyncActions.renameChannel(channelData));
     hideModal();
   };
 

@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import i18next from 'i18next';
 import routes from '../routes.js';
-import { actions as errorActions } from './errors.js';
-import { actions as processActions } from './processState.js';
+import { actions as processActions } from './processing.js';
 
 const slice = createSlice({
   name: 'channels',
@@ -24,46 +24,40 @@ const slice = createSlice({
 });
 
 const addChannels = (name) => async (dispatch) => {
-  dispatch(processActions.setProcessing());
+  dispatch(processActions.setFetching());
   const data = { attributes: { name } };
   const url = routes.channelsPath();
   try {
     await axios.post(url, { data });
-    dispatch(errorActions.resetErrors());
-    dispatch(processActions.resetProcessing());
+    dispatch(processActions.setSuccess());
   } catch (e) {
-    dispatch(processActions.resetProcessing());
-    dispatch(errorActions.addError({ message: 'Network problems. Try again' }));
-    throw e;
+    const key = e.response ? 'server' : 'network';
+    dispatch(processActions.setFailed({ [key]: i18next.t(`errors.${key}`) }));
   }
 };
 
 const renameChannel = ({ name, id }) => async (dispatch) => {
-  dispatch(processActions.setProcessing());
+  dispatch(processActions.setFetching());
   const data = { attributes: { name } };
   const url = routes.channelPath(id);
   try {
     await axios.patch(url, { data });
-    dispatch(errorActions.resetErrors());
-    dispatch(processActions.resetProcessing());
+    dispatch(processActions.setSuccess());
   } catch (e) {
-    dispatch(processActions.resetProcessing());
-    dispatch(errorActions.addError({ message: 'Network problems. Try again' }));
-    throw e;
+    const key = e.response ? 'server' : 'network';
+    dispatch(processActions.setFailed({ [key]: i18next.t(`errors.${key}`) }));
   }
 };
 
 const removeChannel = (id) => async (dispatch) => {
-  dispatch(processActions.setProcessing());
+  dispatch(processActions.setFetching());
   const url = routes.channelPath(id);
   try {
     await axios.delete(url);
-    dispatch(errorActions.resetErrors());
-    dispatch(processActions.resetProcessing());
+    dispatch(processActions.setSuccess());
   } catch (e) {
-    dispatch(processActions.resetProcessing());
-    dispatch(errorActions.addError({ message: 'Network problems. Try again' }));
-    throw e;
+    const key = e.response ? 'server' : 'network';
+    dispatch(processActions.setFailed({ [key]: i18next.t(`errors.${key}`) }));
   }
 };
 
