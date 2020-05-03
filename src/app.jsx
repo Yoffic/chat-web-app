@@ -1,20 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import faker from 'faker';
-import Cookies from 'js-cookie';
 import i18next from 'i18next';
 import { Provider } from 'react-redux';
 import { actions } from './slices/index.js';
 import store from './lib/store.js';
 import socket from './socket.js';
-
+import getUsername from './utils/getUsername.js';
 import UserContext from './context.jsx';
 import App from './components/App';
-
-const createUserName = () => {
-  const username = faker.internet.userName();
-  Cookies.set('username', username, { expires: 365 });
-};
 
 export default (gon) => {
   const defaultChannelId = gon.currentChannelId;
@@ -24,8 +17,7 @@ export default (gon) => {
   store.dispatch(actions.setActiveChannel(gon.currentChannelId));
   store.dispatch(actions.setSuccess());
 
-  createUserName();
-  const username = Cookies.get('username');
+  const username = getUsername();
 
   socket.on('newMessage', ({ data }) => {
     const { attributes } = data;
