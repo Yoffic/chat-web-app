@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import i18next from 'i18next';
 import { Provider } from 'react-redux';
 import { actions } from './slices/index.js';
 import store from './lib/store.js';
