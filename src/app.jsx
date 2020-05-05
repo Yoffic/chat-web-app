@@ -15,7 +15,6 @@ export default (gon) => {
   store.dispatch(actions.addChannelsSuccess(gon.channels));
   store.dispatch(actions.addMessagesSuccess(gon.messages));
   store.dispatch(actions.setActiveChannel(gon.currentChannelId));
-  store.dispatch(actions.setSuccess());
 
   const username = getUsername();
 
@@ -33,10 +32,6 @@ export default (gon) => {
   });
   socket.on('renameChannel', ({ data }) => {
     store.dispatch(actions.renameChannelSuccess(data));
-  });
-
-  socket.on('disconnect', () => {
-    store.dispatch(actions.setFailed({ server: i18next.t('errors.server') }));
   });
 
   ReactDOM.render(

@@ -1,23 +1,30 @@
 import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useDispatch } from 'react-redux';
 import { asyncActions } from '../../slices/index.js';
 
 export default ({ hideModal }) => {
+  const { t } = useTranslation();
+
   const inputRef = useRef();
 
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  });
 
   const dispatch = useDispatch();
 
-  const addNewChannel = (values) => {
-    dispatch(asyncActions.addChannels(values.name));
-    hideModal();
+  const addNewChannel = async (values, actions) => {
+    try {
+      await dispatch(asyncActions.addChannels(values.name));
+      hideModal();
+    } catch (e) {
+      actions.setStatus(t('errors.network'));
+    }
   };
 
   const formik = useFormik({
@@ -34,11 +41,15 @@ export default ({ hideModal }) => {
         <Modal.Title>Add New Channel</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <h6 className="text-danger">
+          {formik.status}
+        </h6>
         <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
             <Form.Label>Enter New Channel Name</Form.Label>
             <Form.Control
               name="name"
+              type="text"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}

@@ -4,9 +4,12 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { asyncActions } from '../../slices/index.js';
 
 export default ({ hideModal, modalData }) => {
+  const { t } = useTranslation();
+
   const inputRef = useRef();
 
   useEffect(() => {
@@ -15,10 +18,14 @@ export default ({ hideModal, modalData }) => {
 
   const dispatch = useDispatch();
 
-  const renameCustomChannel = (values) => {
+  const renameCustomChannel = async (values, actions) => {
     const channelData = { name: values.name, id: modalData.channel.id };
-    dispatch(asyncActions.renameChannel(channelData));
-    hideModal();
+    try {
+      await dispatch(asyncActions.renameChannel(channelData));
+      hideModal();
+    } catch (e) {
+      actions.setStatus(t('errors.network'));
+    }
   };
 
   const formik = useFormik({
@@ -35,6 +42,9 @@ export default ({ hideModal, modalData }) => {
         <Modal.Title>Rename Channel</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <h6 className="text-danger">
+          {formik.status}
+        </h6>
         <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
           <Form.Group>
             <Form.Label>Enter New Channel Name</Form.Label>

@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import i18next from 'i18next';
 import routes from '../routes.js';
-import { actions as processActions } from './processing.js';
 
 const slice = createSlice({
   name: 'channels',
@@ -23,42 +21,21 @@ const slice = createSlice({
   },
 });
 
-const addChannels = (name) => async (dispatch) => {
-  dispatch(processActions.setFetching());
+const addChannels = (name) => async () => {
   const data = { attributes: { name } };
   const url = routes.channelsPath();
-  try {
-    await axios.post(url, { data });
-    dispatch(processActions.setSuccess());
-  } catch (e) {
-    const key = e.response ? 'server' : 'network';
-    dispatch(processActions.setFailed({ [key]: i18next.t(`errors.${key}`) }));
-  }
+  await axios.post(url, { data });
 };
 
-const renameChannel = ({ name, id }) => async (dispatch) => {
-  dispatch(processActions.setFetching());
+const renameChannel = ({ name, id }) => async () => {
   const data = { attributes: { name } };
   const url = routes.channelPath(id);
-  try {
-    await axios.patch(url, { data });
-    dispatch(processActions.setSuccess());
-  } catch (e) {
-    const key = e.response ? 'server' : 'network';
-    dispatch(processActions.setFailed({ [key]: i18next.t(`errors.${key}`) }));
-  }
+  await axios.patch(url, { data });
 };
 
-const removeChannel = (id) => async (dispatch) => {
-  dispatch(processActions.setFetching());
+const removeChannel = (id) => async () => {
   const url = routes.channelPath(id);
-  try {
-    await axios.delete(url);
-    dispatch(processActions.setSuccess());
-  } catch (e) {
-    const key = e.response ? 'server' : 'network';
-    dispatch(processActions.setFailed({ [key]: i18next.t(`errors.${key}`) }));
-  }
+  await axios.delete(url);
 };
 
 const actions = { ...slice.actions };

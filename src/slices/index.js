@@ -5,20 +5,17 @@ import channels, {
   actions as channelsActions, addChannels, renameChannel, removeChannel,
 } from './channels.js';
 import activeChannelId, { actions as activeChannelActions } from './activeChannel.js';
-import processing, { actions as processActions } from './processing.js';
 
 export default combineReducers({
   messages,
   channels,
   activeChannelId,
-  processing,
 });
 
 const actions = {
   ...messagesActions,
   ...channelsActions,
   ...activeChannelActions,
-  ...processActions,
 };
 
 const asyncActions = {

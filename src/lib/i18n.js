@@ -6,7 +6,6 @@ const resources = {
     translation: {
       errors: {
         network: 'Network Error. Try Again',
-        server: 'Oops! Connection to server has been lost.',
       },
       inputText: 'Message',
     },

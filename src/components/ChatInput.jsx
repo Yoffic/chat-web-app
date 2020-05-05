@@ -33,7 +33,7 @@ const ChatInput = () => {
       await dispatch(asyncActions.addMessages(data));
       actions.resetForm();
     } catch (e) {
-      actions.setFieldError('message', t('errors.network'));
+      actions.setStatus(t('errors.network'));
     }
   };
 
@@ -53,12 +53,13 @@ const ChatInput = () => {
           placeholder={t('inputText')}
           onChange={formik.handleChange}
           value={formik.values.message}
-          isInvalid={!!formik.errors.message}
+          isInvalid={!!formik.status}
           disabled={formik.isSubmitting}
           ref={inputRef}
         />
-        <Form.Control.Feedback type="invalid">
-          {formik.errors.message}
+        <Form.Control.Feedback type="invalid" className="d-block">
+          {formik.status}
+          &nbsp;
         </Form.Control.Feedback>
       </Form.Group>
     </Form>
