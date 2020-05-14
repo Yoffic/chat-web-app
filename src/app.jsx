@@ -19,15 +19,16 @@ export default (gon) => {
 
   socket.on('newMessage', ({ data }) => {
     const { attributes } = data;
-    store.dispatch(actions.addMessagesSuccess([attributes]));
+    store.dispatch(actions.addMessageSuccess(attributes));
   });
   socket.on('newChannel', ({ data }) => {
-    store.dispatch(actions.addChannelsSuccess([data.attributes]));
+    store.dispatch(actions.addChannelSuccess(data.attributes));
     store.dispatch(actions.setActiveChannel(data.id));
   });
   socket.on('removeChannel', ({ data }) => {
     store.dispatch(actions.setActiveChannel(defaultChannelId));
     store.dispatch(actions.removeChannelSuccess(data));
+    store.dispatch(actions.removeMessagesSuccess(data));
   });
   socket.on('renameChannel', ({ data }) => {
     store.dispatch(actions.renameChannelSuccess(data));

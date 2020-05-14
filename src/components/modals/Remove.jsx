@@ -15,6 +15,7 @@ export default ({ hideModal, modalData }) => {
   const removeChannel = async (values, actions) => {
     try {
       await dispatch(asyncActions.removeChannel(values.id));
+      actions.setSubmitting(false);
       hideModal();
     } catch (e) {
       actions.setStatus(t('errors.network'));

@@ -22,6 +22,7 @@ export default ({ hideModal, modalData }) => {
     const channelData = { name: values.name, id: modalData.channel.id };
     try {
       await dispatch(asyncActions.renameChannel(channelData));
+      actions.setSubmitting(false);
       hideModal();
     } catch (e) {
       actions.setStatus(t('errors.network'));

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import messages, { actions as messagesActions, addMessages } from './messages.js';
+import messages, { actions as messagesActions, addMessage } from './messages.js';
 import channels, {
-  actions as channelsActions, addChannels, renameChannel, removeChannel,
+  actions as channelsActions, addChannel, renameChannel, removeChannel,
 } from './channels.js';
 import activeChannelId, { actions as activeChannelActions } from './activeChannel.js';
 
@@ -19,8 +19,8 @@ const actions = {
 };
 
 const asyncActions = {
-  addMessages,
-  addChannels,
+  addMessage,
+  addChannel,
   renameChannel,
   removeChannel,
 };

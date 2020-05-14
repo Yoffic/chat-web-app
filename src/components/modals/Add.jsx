@@ -20,7 +20,8 @@ export default ({ hideModal }) => {
 
   const addNewChannel = async (values, actions) => {
     try {
-      await dispatch(asyncActions.addChannels(values.name));
+      await dispatch(asyncActions.addChannel(values.name));
+      actions.setSubmitting(false);
       hideModal();
     } catch (e) {
       actions.setStatus(t('errors.network'));

@@ -30,7 +30,8 @@ const ChatInput = () => {
       message: values.message,
     };
     try {
-      await dispatch(asyncActions.addMessages(data));
+      await dispatch(asyncActions.addMessage(data));
+      actions.setSubmitting(false);
       actions.resetForm();
     } catch (e) {
       actions.setStatus(t('errors.network'));
