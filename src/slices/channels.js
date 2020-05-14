@@ -1,45 +1,64 @@
-import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes.js';
+
+const addChannel = createAsyncThunk(
+  'channels/addChannel',
+  async (name) => {
+    const data = { attributes: { name } };
+    const url = routes.channelsPath();
+    await axios.post(url, { data });
+  },
+);
+
+const renameChannel = createAsyncThunk(
+  'channels/renameChannel',
+  async ({ name, id }) => {
+    const data = { attributes: { name } };
+    const url = routes.channelPath(id);
+    await axios.patch(url, { data });
+  },
+);
+
+const removeChannel = createAsyncThunk(
+  'channels/removeChannel',
+  async (id) => {
+    const url = routes.channelPath(id);
+    await axios.delete(url);
+  },
+);
 
 const slice = createSlice({
   name: 'channels',
   initialState: [],
   reducers: {
-    addChannelsSuccess: (state, { payload }) => [...state, ...payload],
+    addChannelSuccess: (state, { payload }) => {
+      state.push(payload);
+    },
+    addChannelsSuccess: (state, { payload }) => {
+      state.push(...payload);
+    },
     renameChannelSuccess: (state, { payload: { id, attributes } }) => {
       const channelIndex = state.findIndex((channel) => channel.id === id);
-      return [
-        ...state.slice(0, channelIndex),
-        { ...attributes },
-        ...state.slice(channelIndex + 1),
-      ];
+      state[channelIndex] = { ...attributes };
     },
     removeChannelSuccess: (state, { payload: { id } }) => (
       state.filter((channel) => channel.id !== id)
     ),
   },
+  extraReducers: {
+    [addChannel.fulfilled]: () => {},
+    [addChannel.rejected]: () => { throw new Error(); },
+    [renameChannel.fulfilled]: () => {},
+    [renameChannel.rejected]: () => { throw new Error(); },
+    [removeChannel.fulfilled]: () => {},
+    [removeChannel.rejected]: () => { throw new Error(); },
+  },
 });
-
-const addChannels = (name) => async () => {
-  const data = { attributes: { name } };
-  const url = routes.channelsPath();
-  await axios.post(url, { data });
-};
-
-const renameChannel = ({ name, id }) => async () => {
-  const data = { attributes: { name } };
-  const url = routes.channelPath(id);
-  await axios.patch(url, { data });
-};
-
-const removeChannel = (id) => async () => {
-  const url = routes.channelPath(id);
-  await axios.delete(url);
-};
 
 const actions = { ...slice.actions };
 export {
-  actions, addChannels, renameChannel, removeChannel,
+  actions, addChannel, renameChannel, removeChannel,
 };
 export default slice.reducer;

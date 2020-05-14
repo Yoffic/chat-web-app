@@ -1,21 +1,36 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes.js';
+
+const addMessage = createAsyncThunk(
+  'messages/addMessage',
+  async ({ channelId, username, message }) => {
+    const data = { attributes: { username, message } };
+    const url = routes.channelMessagesPath(channelId);
+    await axios.post(url, { data });
+  },
+);
 
 const slice = createSlice({
   name: 'messages',
   initialState: [],
   reducers: {
-    addMessagesSuccess: (state, { payload }) => [...state, ...payload],
+    addMessageSuccess: (state, { payload }) => {
+      state.push(payload);
+    },
+    addMessagesSuccess: (state, { payload }) => {
+      state.push(...payload);
+    },
+    removeMessagesSuccess: (state, { payload: { id } }) => (
+      state.filter((message) => message.id !== id)
+    ),
+  },
+  extraReducers: {
+    [addMessage.fulfilled]: () => {},
+    [addMessage.rejected]: () => { throw new Error(); },
   },
 });
 
-const addMessages = ({ channelId, username, message }) => async () => {
-  const data = { attributes: { username, message } };
-  const url = routes.channelMessagesPath(channelId);
-  await axios.post(url, { data });
-};
-
 const { actions } = slice;
-export { actions, addMessages };
+export { actions, addMessage };
 export default slice.reducer;
