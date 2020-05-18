@@ -40,8 +40,8 @@ const slice = createSlice({
       state.push(...payload);
     },
     renameChannelSuccess: (state, { payload: { id, attributes } }) => {
-      const channelIndex = state.findIndex((channel) => channel.id === id);
-      state[channelIndex] = { ...attributes };
+      const channel = state.find((c) => c.id === id);
+      channel.name = attributes.name;
     },
     removeChannelSuccess: (state, { payload: { id } }) => (
       state.filter((channel) => channel.id !== id)
