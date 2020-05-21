@@ -4,25 +4,12 @@ import { actions as channelActions } from './channels';
 
 const slice = createSlice({
   name: 'activeChannelId',
-  initialState: {
-    current: null,
-    default: null,
-  },
+  initialState: null,
   reducers: {
-    setActiveChannel: (state, { payload }) => {
-      state.current = payload;
-    },
-    setDefaultChannel: (state, { payload }) => {
-      state.default = payload;
-    },
+    setActiveChannel: (_state, { payload }) => payload,
   },
   extraReducers: {
-    [channelActions.removeChannelSuccess]: (state) => {
-      state.current = state.default;
-    },
-    [channelActions.addChannelSuccess]: (state, { payload: { id } }) => {
-      state.current = id;
-    },
+    [channelActions.addChannelSuccess]: (_state, { payload: { id } }) => id,
   },
 });
 
