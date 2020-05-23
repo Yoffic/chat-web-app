@@ -31,21 +31,29 @@ const removeChannel = createAsyncThunk(
 
 const slice = createSlice({
   name: 'channels',
-  initialState: [],
+  initialState: {
+    items: [],
+    activeChannelId: null,
+  },
   reducers: {
+    setActiveChannel: (state, { payload }) => {
+      state.activeChannelId = payload;
+    },
     addChannelSuccess: (state, { payload }) => {
-      state.push(payload);
+      state.items.push(payload);
+      state.activeChannelId = payload.id;
     },
     addChannelsSuccess: (state, { payload }) => {
-      state.push(...payload);
+      state.items.push(...payload);
     },
     renameChannelSuccess: (state, { payload: { id, attributes } }) => {
-      const channel = state.find((c) => c.id === id);
+      const channel = state.items.find((c) => c.id === id);
       channel.name = attributes.name;
     },
-    removeChannelSuccess: (state, { payload: { id } }) => (
-      state.filter((channel) => channel.id !== id)
-    ),
+    removeChannelSuccess: (state, { payload: { id } }) => {
+      state.items = state.items.filter((channel) => channel.id !== id);
+      state.activeChannelId = state.items[0].id;
+    },
   },
   extraReducers: {
     [addChannel.fulfilled]: () => {},

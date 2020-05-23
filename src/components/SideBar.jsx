@@ -25,8 +25,8 @@ const renderChannel = ({ channel: { id, name }, activeChannelId, activateChannel
 };
 
 const SideBar = ({ addChannelModal }) => {
-  const activeChannelId = useSelector((state) => state.activeChannelId);
-  const channels = useSelector((state) => state.channels);
+  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
+  const channels = useSelector((state) => state.channels.items);
   const username = useContext(UserContext);
 
   const dispatch = useDispatch();

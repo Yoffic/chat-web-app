@@ -9,11 +9,9 @@ import UserContext from './context.jsx';
 import App from './components/App';
 
 export default (gon) => {
-  const defaultChannelId = gon.currentChannelId;
-
   store.dispatch(actions.addChannelsSuccess(gon.channels));
   store.dispatch(actions.addMessagesSuccess(gon.messages));
-  store.dispatch(actions.setActiveChannel(defaultChannelId));
+  store.dispatch(actions.setActiveChannel(gon.currentChannelId));
 
   const username = getUsername();
 
@@ -25,7 +23,6 @@ export default (gon) => {
     store.dispatch(actions.addChannelSuccess(data.attributes));
   });
   socket.on('removeChannel', ({ data }) => {
-    store.dispatch(actions.setActiveChannel(defaultChannelId));
     store.dispatch(actions.removeChannelSuccess(data));
   });
   socket.on('renameChannel', ({ data }) => {

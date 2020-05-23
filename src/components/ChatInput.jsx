@@ -11,7 +11,7 @@ const ChatInput = () => {
   const { t } = useTranslation();
 
   const username = useContext(UserContext);
-  const activeChannelId = useSelector((state) => state.activeChannelId);
+  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
 
   const inputRef = useRef();
   useEffect(() => {
